@@ -1,34 +1,8 @@
 # AgriConnect - Seed & Fertilizer Marketplace
 # Software Requirements Specification
 
-**Course Code:** [Your Course Code Here]
-**Course Name:** [Your Course Name Here]
-
-**Student Names & Registration Numbers:**
-* [Student 1 Name] - [Student 1 Reg No.]
-* [Student 2 Name] - [Student 2 Reg No.]
-* (Add more as needed)
-
-**Prepared for:** Continuous Assessment 3
+**Prepared for:** Continuous Assessment 2
 **Date:** April 19, 2025 (Spring 2025)
-
----
-
-**Table of Contents**
-*(This should be auto-generated in Word based on headings)*
-
----
-
-**Revision History**
-
-| Version | Date         | Author(s)             | Description of Change                         |
-| :------ | :----------- | :-------------------- | :-------------------------------------------- |
-| 1.0     | April 19, 2025 | [Your Name/Team Name] | Initial SRS Draft                           |
-| 1.1     | April 19, 2025 | [Your Name/Team Name] | Expanded details in all sections            |
-| 1.2     | April 19, 2025 | [Your Name/Team Name] | Added further detail and technical specifics |
-|         |              |                       |                                               |
-
----
 
 ## 1. Introduction
 
@@ -370,66 +344,3 @@ The application shall not interface directly with any specific hardware beyond t
         * *Processing:* Receives request, extracts `ProductID`, validates ID format, constructs `DB Delete Command` (via Mongoose `findByIdAndDelete`).
         * *Output:* `DB Delete Command` -> `Product Database`. Receives `DB Delete Result` (deleted doc or null) <- `Product Database`. Sends `Success Response` (HTTP 200 JSON) or `Not Found Response` (HTTP 404 JSON) or `Error Response` (HTTP 400/500 JSON) -> Browser.
 
-*(Placeholder: Formal DFD diagrams (Level 0, Level 1 for each process) could be inserted here if created.)*
-
----
-
-## 5. GitHub Link
-
-*(Placeholder: Provide the full URL to the project's GitHub repository)*
-[Link to GitHub Repository - To be added]
-
----
-
-## 6. Deployed Link
-
-*(Placeholder: Provide the URL where the application is deployed, if applicable. State "Not Deployed" otherwise.)*
-[Link to Deployed Application - Not Deployed]
-
----
-
-## 7. Client Approval Proof
-
-*(Placeholder: Insert evidence of client/instructor approval, such as signed forms, email screenshots, or references to specific feedback sessions, if applicable for the course requirements.)*
-
----
-
-## 8. Client Location Proof
-
-*(Placeholder: Insert evidence confirming the client's location context (Amritsar, Punjab, India) if required, such as communication excerpts or formal statements.)*
-
----
-
-## 9. Transaction ID Proof
-
-*(Placeholder: Insert relevant transaction ID proof if this relates to a specific project funding or registration process required by the course/client.)*
-
----
-
-## 10. Email Acknowledgement
-
-*(Placeholder: Insert screenshots or text of relevant email acknowledgements from the client or instructor if required.)*
-
----
-
-## 11. GST No.
-
-*(Placeholder: Insert client's Goods and Services Tax number if applicable and required for the project context.)*
-
----
-
-## A. Appendices
-
-*(Appendices provide supplementary information. Examples below.)*
-
-### A.1 Appendix 1: Potential Future Use Cases (Detailed)
-
-*(Example: Could include detailed user stories or use case descriptions for features like User Registration, Search/Filter, Shopping Cart, Order Placement, Supplier Dashboard, Admin Panel, etc.)*
-[Content for Appendix 1 - To be added]
-
-### A.2 Appendix 2: Initial Concept Notes / Meeting Minutes
-
-*(Example: Could include scanned handwritten notes, typed minutes from initial project discussions, brainstorming diagrams, or relevant excerpts from early client communication.)*
-[Content for Appendix 2 - To be added]
-
----
