@@ -38,7 +38,7 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository** (if applicable, otherwise skip):
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/nishannn07/AgriConnect
     cd seed-fertilizer-marketplace
     ```
 2.  **Install dependencies:**
