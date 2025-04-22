@@ -74,21 +74,70 @@ jobs:
 
 The deployment strategy for AgriConnect can be tailored based on the hosting platform. Below are some common approaches:
 
-1. **Heroku Deployment:**
-   * Use the Heroku CLI to deploy the application directly from the GitHub Actions workflow.
-   * Example:
-     ```bash
-     heroku login
-     heroku git:remote -a <app-name>
-     git push heroku main
-     ```
-
-2. **Dockerized Deployment:**
+1. **Dockerized Deployment:**
    * Build a Docker image of the application and push it to a container registry (e.g., Docker Hub, AWS ECR).
    * Deploy the container to a cloud platform (e.g., AWS ECS, Kubernetes).
 
-3. **Cloud Deployment (AWS, Azure, GCP):**
+2. **Cloud Deployment (AWS, Azure, GCP):**
    * Use the respective CLI tools (e.g., AWS CLI, Azure CLI) to deploy the application to a cloud environment.
+
+3. **Azure Deployment:**
+   * Deploy the application to Azure App Service using the Azure CLI or GitHub Actions.
+   * Example Azure CLI commands:
+     ```bash
+     # Login to Azure
+     az login
+
+     # Create a resource group
+     az group create --name AgriConnectResourceGroup --location eastus
+
+     # Create an App Service plan
+     az appservice plan create --name AgriConnectPlan --resource-group AgriConnectResourceGroup --sku F1
+
+     # Create a web app
+     az webapp create --name AgriConnectApp --resource-group AgriConnectResourceGroup --plan AgriConnectPlan --runtime "NODE|16-lts"
+
+     # Deploy the application
+     az webapp deployment source config-local-git --name AgriConnectApp --resource-group AgriConnectResourceGroup
+     git remote add azure $(az webapp deployment source config-local-git --name AgriConnectApp --resource-group AgriConnectResourceGroup --query url --output tsv)
+     git push azure main
+     ```
+
+   * Alternatively, use GitHub Actions for automated deployment:
+     ```yaml
+     name: Deploy to Azure
+
+     on:
+       push:
+         branches:
+           - main
+
+     jobs:
+       build-and-deploy:
+         runs-on: ubuntu-latest
+
+         steps:
+         - name: Checkout Code
+           uses: actions/checkout@v3
+
+         - name: Set up Node.js
+           uses: actions/setup-node@v3
+           with:
+             node-version: 16
+
+         - name: Install Dependencies
+           run: npm install
+
+         - name: Build Application
+           run: npm run build
+
+         - name: Deploy to Azure Web App
+           uses: azure/webapps-deploy@v2
+           with:
+             app-name: AgriConnectApp
+             slot-name: production
+             publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+     ```
 
 ## Future Enhancements
 
