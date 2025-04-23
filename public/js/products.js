@@ -1,5 +1,3 @@
-// public/js/products.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const productListDiv = document.getElementById('productList');
     const loadingIndicator = document.getElementById('loadingIndicator');
@@ -13,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productName = button.dataset.productName || 'this product';
 
                 if (productId) {
-                    // Ask for confirmation before deleting
                     if (window.confirm(`Are you sure you want to remove "${productName}"?`)) {
-                         // Disable button to prevent multiple clicks
                         button.disabled = true;
                         button.textContent = 'Removing...';
                         handleDeleteProduct(productId, button);
@@ -23,28 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-        // --- End Event Listener ---
-
     } else {
         console.error("Required HTML elements (productList, loadingIndicator, noProductsMessage) not found.");
     }
 });
 
-/**
- * Fetches products from the API and displays them.
- * @param {HTMLElement} productListDiv - The container div for product cards.
- * @param {HTMLElement} loadingIndicator - The loading indicator element.
- * @param {HTMLElement} noProductsMessage - The message element for no products.
- */
 async function fetchProducts(productListDiv, loadingIndicator, noProductsMessage) {
-    // Show loading indicator
     loadingIndicator.classList.remove('hidden');
-    loadingIndicator.classList.add('flex'); // Use flex to display it correctly
-    productListDiv.innerHTML = ''; // Clear previous products
-    noProductsMessage.classList.add('hidden'); // Hide no products message
+    loadingIndicator.classList.add('flex');
+    productListDiv.innerHTML = '';
+    noProductsMessage.classList.add('hidden');
 
     try {
-        const response = await fetch('/api/products'); // Fetch from the API route
+        const response = await fetch('/api/products');
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
@@ -52,7 +39,6 @@ async function fetchProducts(productListDiv, loadingIndicator, noProductsMessage
 
         const products = await response.json();
 
-        // Hide loading indicator
         loadingIndicator.classList.add('hidden');
         loadingIndicator.classList.remove('flex');
 
@@ -61,50 +47,38 @@ async function fetchProducts(productListDiv, loadingIndicator, noProductsMessage
         }
 
         if (products.length === 0) {
-            // Show 'no products' message if the array is empty
             noProductsMessage.classList.remove('hidden');
-            productListDiv.innerHTML = ''; // Ensure list is empty
+            productListDiv.innerHTML = '';
         } else {
-            // Hide 'no products' message and render products
             noProductsMessage.classList.add('hidden');
             renderProducts(products, productListDiv);
         }
 
     } catch (error) {
         console.error('Error fetching or processing products:', error);
-        // Hide loading indicator
         loadingIndicator.classList.add('hidden');
         loadingIndicator.classList.remove('flex');
-        // Display error message to the user
         productListDiv.innerHTML = `
             <div class="col-span-full text-center text-red-600 bg-red-100 p-4 rounded-md">
                 <p><strong>Error loading products.</strong></p>
                 <p>${escapeHTML(error.message)}</p>
                 <p>Please try refreshing the page.</p>
             </div>`;
-        noProductsMessage.classList.add('hidden'); // Ensure no products message is hidden
+        noProductsMessage.classList.add('hidden');
     }
 }
 
-/**
- * Renders the product cards into the container.
- * @param {Array} products - Array of product objects.
- * @param {HTMLElement} container - The container element to append cards to.
- */
 function renderProducts(products, container) {
-    container.innerHTML = ''; // Clear container first
+    container.innerHTML = '';
 
     products.forEach(product => {
         const card = document.createElement('div');
-        // Add an ID to the card itself for easier removal later
         card.id = `product-card-${product._id}`;
-        card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 ease-in-out flex flex-col'; // Added flex-col
+        card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 ease-in-out flex flex-col';
 
-        // Format price to Indian Rupees
         const formattedPrice = `₹${parseFloat(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-        // Determine badge color based on type
-        let typeBadgeColor = 'bg-gray-500'; // Default
+        let typeBadgeColor = 'bg-gray-500';
         if (product.type.toLowerCase() === 'seed') {
             typeBadgeColor = 'bg-yellow-600';
         } else if (product.type.toLowerCase() === 'fertilizer') {
@@ -115,8 +89,6 @@ function renderProducts(products, container) {
             typeBadgeColor = 'bg-blue-600';
         }
 
-        // --- Add Remove Button ---
-        // Includes data-product-id and data-product-name for the event listener
         const removeButtonHTML = `
             <button
                 class="remove-product-btn text-xs bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1 rounded-md transition duration-150 ease-in-out ml-2"
@@ -126,8 +98,6 @@ function renderProducts(products, container) {
                 Remove
             </button>
         `;
-        // --- End Remove Button ---
-
 
         card.innerHTML = `
             <img src="${escapeHTML(product.imageUrl || 'https://placehold.co/600x400/e2e8f0/a0aec0?text=No+Image')}"
@@ -151,11 +121,6 @@ function renderProducts(products, container) {
     });
 }
 
-/**
- * Handles the product deletion API call and DOM update.
- * @param {string} productId - The ID of the product to delete.
- * @param {HTMLButtonElement} button - The button element that was clicked.
- */
 async function handleDeleteProduct(productId, button) {
     try {
         const response = await fetch(`/api/products/${productId}`, {
@@ -191,12 +156,6 @@ async function handleDeleteProduct(productId, button) {
     }
 }
 
-
-/**
- * Basic HTML escaping function to prevent XSS.
- * @param {string | number | undefined | null} str - The string to escape.
- * @returns {string} - The escaped string.
- */
 function escapeHTML(str) {
     if (str === null || str === undefined) return '';
     const stringValue = String(str);

@@ -67,7 +67,6 @@ jobs:
     - name: Deploy to Production
       run: |
         echo "Deploying application..."
-        # Add deployment commands here (e.g., Docker, Heroku CLI, AWS CLI)
 ```
 
 ## Deployment Strategy
@@ -85,19 +84,10 @@ The deployment strategy for AgriConnect can be tailored based on the hosting pla
    * Deploy the application to Azure App Service using the Azure CLI or GitHub Actions.
    * Example Azure CLI commands:
      ```bash
-     # Login to Azure
      az login
-
-     # Create a resource group
      az group create --name AgriConnectResourceGroup --location eastus
-
-     # Create an App Service plan
      az appservice plan create --name AgriConnectPlan --resource-group AgriConnectResourceGroup --sku F1
-
-     # Create a web app
      az webapp create --name AgriConnectApp --resource-group AgriConnectResourceGroup --plan AgriConnectPlan --runtime "NODE|16-lts"
-
-     # Deploy the application
      az webapp deployment source config-local-git --name AgriConnectApp --resource-group AgriConnectResourceGroup
      git remote add azure $(az webapp deployment source config-local-git --name AgriConnectApp --resource-group AgriConnectResourceGroup --query url --output tsv)
      git push azure main
