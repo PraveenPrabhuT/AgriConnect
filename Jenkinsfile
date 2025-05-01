@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = 'your-dockerhub-username/agriconnect'
-        IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+        IMAGE_NAME = 'praveenprabhu504/node_pipeline-app'
+        IMAGE_TAG = "latest"
     }
 
     stages {
