@@ -30,14 +30,11 @@ pipeline {
         stage('Push Image') {
             steps {
                 script {
-                    echo "Pushing Docker image to registry..."
-                    withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        bat "echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin"
-                        bat "docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
-                        bat "docker push ${env.IMAGE_NAME}:latest"
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                        bat "docker push ${IMAGE_NAME}"
+                        bat "docker logout"
                     }
-                    echo "Image push complete."
-                }
             }
         }
         stage('Deploy') {
