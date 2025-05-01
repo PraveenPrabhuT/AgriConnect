@@ -3,6 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'praveenprabhu504/node_pipeline-app'
         IMAGE_TAG = "latest"
+        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
     }
 
     stages {
