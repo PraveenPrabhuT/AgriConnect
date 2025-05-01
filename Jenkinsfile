@@ -21,7 +21,7 @@ pipeline {
                     echo "Building Docker image using docker-compose..."
                     bat 'docker-compose build --no-cache app'
                     echo "Docker image build complete."
-                    bat "docker tag agriconnect_app ${env.IMAGE_NAME}:latest"
+                    bat "docker tag node_pipeline-app ${env.IMAGE_NAME}:latest"
                 }
             }
         }
