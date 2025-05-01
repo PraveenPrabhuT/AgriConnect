@@ -30,11 +30,13 @@ pipeline {
         stage('Push Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
-                        bat "docker push ${IMAGE_NAME}"
-                        bat "docker logout"
+                    echo "Pushing Docker image to Docker Hub..."
+                    withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        bat "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                        bat "docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
                     }
+                    echo "Docker image pushed to Docker Hub."
+                }
             }
         }
         stage('Deploy') {
