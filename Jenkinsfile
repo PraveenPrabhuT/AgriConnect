@@ -19,9 +19,9 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image using docker-compose..."
-                    sh 'docker-compose build --no-cache app'
+                    bat 'docker-compose build --no-cache app'
                     echo "Docker image build complete."
-                    sh "docker tag agriconnect_app ${env.IMAGE_NAME}:latest"
+                    bat "docker tag agriconnect_app ${env.IMAGE_NAME}:latest"
                 }
             }
         }
@@ -31,9 +31,9 @@ pipeline {
                 script {
                     echo "Pushing Docker image to registry..."
                     withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin"
-                        sh "docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
-                        sh "docker push ${env.IMAGE_NAME}:latest"
+                        bat "echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin"
+                        bat "docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
+                        bat "docker push ${env.IMAGE_NAME}:latest"
                     }
                     echo "Image push complete."
                 }
@@ -43,8 +43,8 @@ pipeline {
             steps {
                 script {
                     echo "Deploying application using docker-compose..."
-                    sh 'docker-compose down'
-                    sh 'docker-compose up -d app'
+                    bat 'docker-compose down'
+                    bat 'docker-compose up -d app'
                     echo "Deployment complete. Application should be running."
                 }
             }
