@@ -13,6 +13,9 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    - name: Check Docker version
+      run: docker --version
+
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
