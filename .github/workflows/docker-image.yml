@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Login to DockerHub
+      run: docker login -u ${{secrets.DOCKER_USERNAME -p ${{secrets.DOCKER_PASSWORD}}
+
+    - name: Docker Compose Build
+      run: docker-compose build --no-cache app
+
+    - name: Docker Tag
+      run: docker tag node_pipeline-app ${env.IMAGE_NAME}:latest
+
+    - name: Push Docker Image
+      run: docker push ${{secrets.DOCKER_USERNAME}}/AgriConnect:latest
