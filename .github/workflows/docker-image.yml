@@ -13,17 +13,18 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Check Docker version
-      run: docker --version
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-actions@v3
 
     - name: Login to DockerHub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker Compose Build
-      run: docker compose build --no-cache app
-
-    - name: Docker Tag
-      run: docker tag node_pipeline-app ${env.IMAGE_NAME}:latest
-
-    - name: Push Docker Image
-      run: docker push ${{secrets.DOCKER_USERNAME}}/AgriConnect:latest
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ github.sha }}
+        
